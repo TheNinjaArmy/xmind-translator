@@ -139,6 +139,11 @@ function filterJSON(json, level) {
 function loadFromFile (filename) {
 
     var result= {};
+    var path_separator = '';
+
+    if(navigator.platform.includes("Linux") || navigator.platform.includes("Mac")) path_separator = '/';
+    else if (navigator.platform.includes("Win32") || navigator.platform.includes("Win16")) path_separator = '\\';
+
     fs.readFile(filename, function(err, data) {
         if (err) app.dialogs.showSimpleDialog(err);
         JSZip.loadAsync(data)
@@ -149,7 +154,7 @@ function loadFromFile (filename) {
             var obj = JSON.parse(content_json);
             result = filterJSON(obj[0].rootTopic, 2);
             
-            fs.writeFile(path.parse(filename).dir + '/' + path.parse(filename).name + '.json', JSON.stringify(result), function(err) {
+            fs.writeFile(path.parse(filename).dir + path_separator + path.parse(filename).name + '.json', JSON.stringify(result), function(err) {
 
                 var message = "Found entitites:\n";
                 for(var i=0; i<found_entities.length; i++){
@@ -174,7 +179,7 @@ function loadFromFile (filename) {
                 result = xmlToJson(XML, 2);    ////cmabiar cuando el otro cambie     <------------(1)
 
 
-                fs.writeFile(path.parse(filename).dir + '/' + path.parse(filename).name + '.json', JSON.stringify(result), function(err) {
+                fs.writeFile(path.parse(filename).dir + path_separator + path.parse(filename).name + '.json', JSON.stringify(result), function(err) {
 
                     var message = "Found entitites:\n";
                     for(var i=0; i<found_entities.length; i++){
