@@ -1,0 +1,26 @@
+{
+  "menu": [
+    {
+      "id": "xmind", 
+      "label": "XMind",
+      "submenu": [
+        {
+          "label": "Importar archivo XMind",
+          "id": "xmind.submenu1", 
+          "command": "xmind:importar-xmind" 
+        },
+        {
+          "label": "Abrir Archivo JSON",
+          "id": "xmind.submenu2",
+          "command": "xmind:abrir-json"
+        },
+        { "type": "separator" },
+        {
+          "label": "Hola Mundo",
+          "id": "xmind.submenu3",
+          "command": "xmind:hello-world"
+        }
+      ]
+    }
+  ]
+}
