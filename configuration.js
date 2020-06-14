@@ -1,4 +1,4 @@
-const niveles_t = {
+const levels_t = {
     2: "SYSTEM",
     5: "PROCESS",
     8: "REQUIREMENTS",
@@ -11,7 +11,7 @@ const niveles_t = {
     29: ""
 };
 
-const niveles_valores = {
+const levels_values = {
     2: [""],
     5: [""],
     8: ["requerimientos" ,"requirements", "definición de requerimientos", "necesidades", "requerimientos / receta / diagnostico", "requisitos"],
@@ -39,6 +39,6 @@ const similarity_rate = {
     32: 0
 };
 
-exports.niveles_t = niveles_t
-exports.niveles_valores = niveles_valores
+exports.levels_t = levels_t
+exports.levels_values = levels_values
 exports.similarity_rate = similarity_rate

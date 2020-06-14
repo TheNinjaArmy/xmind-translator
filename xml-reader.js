@@ -7,7 +7,7 @@ var found_entities = [];
 
 function verifyNode(str, level){
     var valorNodo = str.normalize('NFKC').toLowerCase();
-    var palabras_reservadas = config.niveles_valores[level];
+    var palabras_reservadas = config.levels_values[level];
 
     var matches = stringSimilarity.findBestMatch(valorNodo, palabras_reservadas);
 
@@ -69,7 +69,7 @@ function xmlToJson(xml, level) {
             else if(nodeName == "title"){              
                 var valorNodoTItulo = xmlToJson(item, level+1).normalize('NFD').replace(/[\u0300-\u036f]/g, "");
                 if(verifyNode(valorNodoTItulo, level)) {
-                    obj[config.niveles_t[level]] = valorNodoTItulo;
+                    obj[config.levels_t[level]] = valorNodoTItulo;
                     if(!(found_entities.includes(valorNodoTItulo))  && level==17) found_entities.push(valorNodoTItulo);
                 }
                 else return null;
@@ -111,7 +111,7 @@ function filterJSON(json, level) {
     if(verifyNode(json["title"], level)){
         obj["id"] = json["id"];
         var valorNodoTitulo = json["title"].normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-        obj[config.niveles_t[level]] = valorNodoTitulo;
+        obj[config.levels_t[level]] = valorNodoTitulo;
         if(!(found_entities.includes(valorNodoTitulo)) && level==17) found_entities.push(valorNodoTitulo);
     } else return null;
 
@@ -126,7 +126,7 @@ function filterJSON(json, level) {
                 return el != null;
             });
             
-            // if(filtered.length == 0) /*throw*/ app.dialogs.showAlertDialog("There are no components in the layer \"" + config.niveles_t[level] + "\"" );
+            // if(filtered.length == 0) /*throw*/ app.dialogs.showAlertDialog("There are no components in the layer \"" + config.levels_t[level] + "\"" );
             
             obj["CONTENT"] = filtered;
         }
