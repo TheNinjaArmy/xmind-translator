@@ -128,7 +128,6 @@ function create_diagram (obj) {
 
                                         if(!atribute.ATTRIBUTE.match(regex)){
                                             
-                                            console.log("dsadsad");
                                             if("CONTENT" in atribute.CONTENT[3]){
                                                 for(j=0; j<atribute.CONTENT[3].CONTENT.length; j++){}
                                             }
@@ -160,10 +159,8 @@ function create_diagram (obj) {
         }
     );
 
-    console.log("dsadsad");
     for(var classKey in associationTracer){
 
-        let regex = "^<[a-zA-Z0-9 ]*>$";
         var sameEntity = (element) => element.entity == classKey;
         var index = classes.findIndex(sameEntity);
         var entityTailClassView = classes[index].classview;
@@ -171,10 +168,13 @@ function create_diagram (obj) {
         for(var classKey2 in associationTracer[classKey]){
             var sameEntity = (element) => element.entity == classKey2;
             index = classes.findIndex(sameEntity);
-            var entityHeadClassView = classes[index].classview;
+            if(index>-1){    
+                var entityHeadClassView = classes[index].classview;
 
-            if(associationTracer[classKey][classKey2])
-                associations.push(create_association(diagram, entityTailClassView, entityHeadClassView));
+                if(associationTracer[classKey][classKey2])
+                    associations.push(create_association(diagram, entityTailClassView, entityHeadClassView));
+
+            }
         }
     }
 
