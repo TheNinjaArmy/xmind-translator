@@ -30,7 +30,7 @@ function create_class (diagram, name, x1=100, x2=200, y1=100, y2=200) {
     return classView;
 }
 
-function create_association (diagram, tailClass, headClass) {     //tailClass = donde inicia la asociación
+function create_association (diagram, tailClass, headClass, name="inicia", multiplicity="0..1", aggregation="shared") {     //tailClass = donde inicia la asociación
     var options = {
         id: "UMLAssociation",
         parent: diagram._parent,
@@ -41,17 +41,23 @@ function create_association (diagram, tailClass, headClass) {     //tailClass = 
         headModel: headClass.model,
         modelInitializer: function (elem) {
             /////////////////////////END1////////////////////////
-            elem.end1.name = "inicia";
-            elem.end1.multiplicity = "0..1";    // 0..1 -- 1 -- 0..* -- 1..* -- *
-            elem.end1.aggregation = "shared"     // "none"  "shared"  "composite"
+            elem.end1.name = name;
+            elem.end1.multiplicity = multiplicity;    // 0..1 -- 1 -- 0..* -- 1..* -- *
+            elem.end1.aggregation = aggregation;     // "none"  "shared"  "composite"
             /////////////////////////END1////////////////////////
-            elem.end2.name = "termina";
-            elem.end2.multiplicity = "0..1";    // 0..1 -- 1 -- 0..* -- 1..* -- *
-            elem.end2.aggregation = "shared"     // "none"  "shared"  "composite"
+            // elem.end2.name = "termina";
+            // elem.end2.multiplicity = "0..1";    // 0..1 -- 1 -- 0..* -- 1..* -- *
+            // elem.end2.aggregation = "shared"     // "none"  "shared"  "composite"
         }
     }
     var assoView = app.factory.createModelAndView(options)
     return assoView;
+}
+
+function update_association(association, name="termina", multiplicity="0..1", aggregation="shared"){
+    app.engine.setProperty(association.model.end2, "name", name);
+    app.engine.setProperty(association.model.end2, "multiplicity", multiplicity);
+    app.engine.setProperty(association.model.end2, "aggregation", aggregation);
 }
 
 function create_attribute (classview, name="NombreAtributo", type="INT") {     //tailClass = donde inicia la asociación
@@ -112,7 +118,7 @@ function create_diagram (obj) {
                                 for(var classKey in associationTracer)
                                     for(var classKey2 in associationTracer)
                                         if(!(associationTracer[classKey][classKey2]))
-                                            associationTracer[classKey][classKey2] = 0;
+                                            associationTracer[classKey][classKey2] = null;
                             }
 
                             if("CONTENT" in entity){
@@ -131,13 +137,18 @@ function create_diagram (obj) {
                                             if("CONTENT" in atribute.CONTENT[3]){
                                                 for(j=0; j<atribute.CONTENT[3].CONTENT.length; j++){}
                                             }
-                                            attributes.push(create_attribute(entityClassView, atribute.CONTENT[0].CONSIDERATIONS, atribute.CONTENT[2].CONSIDERATIONS));
+                                            
+                                            var sameEntity = (element) => element.name == atribute.CONTENT[0].CONSIDERATIONS;
+                                            var index = attributes.findIndex(sameEntity);
+
+                                            if(index == -1)
+                                                attributes.push(create_attribute(entityClassView, atribute.CONTENT[0].CONSIDERATIONS, atribute.CONTENT[2].CONSIDERATIONS));
 
                                         } else {
 
                                             atribute.CONTENT.forEach(relatedEntities => {
                                                 if(!associationTracer[entity.ENTITY][relatedEntities.CONSIDERATIONS]){
-                                                    associationTracer[entity.ENTITY][relatedEntities.CONSIDERATIONS] = 1;
+                                                    associationTracer[entity.ENTITY][relatedEntities.CONSIDERATIONS] = 1;   //{ "name": "nombre", "aggregation": "none---shared---composite", "multiplicity": "0..1 -- 1 -- 0..* -- 1..* -- *"}
                                                 }
 
                                             });
@@ -170,11 +181,20 @@ function create_diagram (obj) {
             index = classes.findIndex(sameEntity);
             if(index>-1){    
                 var entityHeadClassView = classes[index].classview;
+                var sameAssociation = (element) => ((element.tail == entityHeadClassView) && (element.head == entityTailClassView));
+                index = associations.findIndex(sameAssociation);
 
-                if(associationTracer[classKey][classKey2])
-                    associations.push(create_association(diagram, entityTailClassView, entityHeadClassView));
 
-            }
+                if(associationTracer[classKey][classKey2] !== null && index==-1)  //associationTracer[classKey][classKey2] && index==-1
+                    associations.push(create_association(diagram, entityTailClassView, entityHeadClassView)); //, name, multiplicity, aggregation
+                else if(associationTracer[classKey][classKey2] !== null && index>1){
+                    update_association(associations[index]);
+                }
+
+            } 
+                //app.engine.setProperty(temp1.model.end1, "name", "aasds");
+                //temp1.nameLabel.model.name
+            
         }
     }
 
