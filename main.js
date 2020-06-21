@@ -63,7 +63,7 @@ function abrirArchivoJSON (fullPath) {
 }
 
 function init () {
-    app.commands.register('xmind:hello-world', handleShowMessage)
+    // app.commands.register('xmind:hello-world', handleShowMessage)
     app.commands.register('xmind:importar-xmind', importarArchivoXMind)
     app.commands.register('xmind:abrir-json', abrirArchivoJSON)
 }

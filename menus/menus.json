@@ -13,12 +13,6 @@
           "label": "Abrir Archivo JSON",
           "id": "xmind.submenu2",
           "command": "xmind:abrir-json"
-        },
-        { "type": "separator" },
-        {
-          "label": "Hola Mundo",
-          "id": "xmind.submenu3",
-          "command": "xmind:hello-world"
         }
       ]
     }
