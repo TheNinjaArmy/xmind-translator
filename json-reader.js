@@ -30,13 +30,13 @@ function create_class (diagram, name, x1=100, x2=200, y1=100, y2=200) {
     return classView;
 }
 
-function create_association (diagram, tailClass, headClass, name="association", end="inicia", multiplicity="0..1", aggregation="shared") {     //tailClass = donde inicia la asociación
+function create_association (diagram, tailClass, headClass, name="", end="", multiplicity="", aggregation="none") {     //tailClass = donde inicia la asociación
     var options = {
         id: "UMLAssociation",
         parent: diagram._parent,
         diagram: diagram,
         tailView: tailClass,
-        headView: headClass,     /////TODO: decidir como manejar los tipos de relaciones
+        headView: headClass,     
         tailModel: tailClass.model,
         headModel: headClass.model,
         modelInitializer: function (elem) {
@@ -149,8 +149,15 @@ function create_diagram (obj) {
                                             var sameEntity = (element) => (element.name == atribute.CONTENT[0].CONSIDERATIONS) && (element._parent.name == entityClassView.model.name);
                                             var index = attributes.findIndex(sameEntity);
 
-                                            if(index == -1)
-                                                attributes.push(create_attribute(entityClassView, atribute.CONTENT[0].CONSIDERATIONS, atribute.CONTENT[2].CONSIDERATIONS));
+                                            if(index == -1){
+                                                var name = "";
+                                                var type = "";
+                                                if(typeof relatedEntities.CONTENT[0] !== 'undefined') name = atribute.CONTENT[0].CONSIDERATIONS;
+                                                if(typeof relatedEntities.CONTENT[0] !== 'undefined') type = atribute.CONTENT[2].CONSIDERATIONS;
+                                                
+                                                attributes.push(create_attribute(entityClassView, name, type));
+
+                                            }
 
                                         } else {
                                             atribute.CONTENT.forEach(relatedEntities => {
