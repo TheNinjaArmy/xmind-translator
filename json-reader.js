@@ -62,7 +62,7 @@ function create_association (diagram, tailClass, headClass, name="association", 
 
 function update_association(association, name="association", end="inicia", multiplicity="0..1", aggregation="shared"){
     app.engine.setProperty(association.model, "name", name);
-    if(aggregation == "dir") app.engine.setProperty(association.model.end2, "naviagble", true);////elem.model.end1.naviagble = true;
+    if(aggregation == "dir") app.engine.setProperty(association.model.end2, "navigable", true);////elem.model.end1.naviagble = true;
     else app.engine.setProperty(association.model.end2, "aggregation", aggregation);
     app.engine.setProperty(association.model.end2, "multiplicity", multiplicity);
     app.engine.setProperty(association.model.end2, "name", end);
