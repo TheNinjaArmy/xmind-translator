@@ -68,7 +68,7 @@ function update_association(association, name="association", end="inicia", multi
     app.engine.setProperty(association.model.end2, "name", end);
 }
 
-function create_attribute (classview, name="NombreAtributo", type="INT") {     //tailClass = donde inicia la asociación
+function create_attribute (classview, name="NombreAtributo", type="") {     //tailClass = donde inicia la asociación
     var options = {
         id: "UMLAttribute",
         parent: classview.model,
@@ -152,8 +152,8 @@ function create_diagram (obj) {
                                             if(index == -1){
                                                 var name = "";
                                                 var type = "";
-                                                if(typeof relatedEntities.CONTENT[0] !== 'undefined') name = atribute.CONTENT[0].CONSIDERATIONS;
-                                                if(typeof relatedEntities.CONTENT[0] !== 'undefined') type = atribute.CONTENT[2].CONSIDERATIONS;
+                                                if(typeof atribute.CONTENT[0].CONSIDERATIONS !== 'undefined') name = atribute.CONTENT[0].CONSIDERATIONS;
+                                                if(typeof atribute.CONTENT[2].CONSIDERATIONS !== 'undefined') type = atribute.CONTENT[2].CONSIDERATIONS;
                                                 
                                                 attributes.push(create_attribute(entityClassView, name, type));
 
