@@ -146,7 +146,7 @@ function create_diagram (obj) {
                                             //     for(j=0; j<atribute.CONTENT[3].CONTENT.length; j++){}
                                             // }
                                             
-                                            var sameEntity = (element) => element.name == atribute.CONTENT[0].CONSIDERATIONS;
+                                            var sameEntity = (element) => (element.name == atribute.CONTENT[0].CONSIDERATIONS) && (element._parent.name == entityClassView.model.name);
                                             var index = attributes.findIndex(sameEntity);
 
                                             if(index == -1)
