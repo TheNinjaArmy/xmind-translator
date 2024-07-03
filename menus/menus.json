@@ -2,7 +2,7 @@
   "menu": [
     {
       "id": "xmind", 
-      "label": "XMind",
+      "label": "CDA",
       "submenu": [
         {
           "label": "Importar archivo XMind",

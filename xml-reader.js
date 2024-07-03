@@ -140,9 +140,9 @@ function loadFromFile (filename) {
 
     var result= {};
     var path_separator = '';
-
-    if(navigator.platform.includes("Linux") || navigator.platform.includes("Mac")) path_separator = '/';
-    else if (navigator.platform.includes("Win32") || navigator.platform.includes("Win16")) path_separator = '\\';
+    // TODO: cambiar la parte platform
+    // if(navigator.platform.includes("Linux") || navigator.platform.includes("Mac")) path_separator = '/';
+    // else if (navigator.platform.includes("Win32") || navigator.platform.includes("Win16")) path_separator = '\\';
 
     fs.readFile(filename, function(err, data) {
         if (err) app.dialogs.showSimpleDialog(err);
@@ -153,17 +153,22 @@ function loadFromFile (filename) {
             
             var obj = JSON.parse(content_json);
             result = filterJSON(obj[0].rootTopic, 2);
-            
-            fs.writeFile(path.parse(filename).dir + path_separator + path.parse(filename).name + '.json', JSON.stringify(result), function(err) {
-
-                var message = "Found entitites:\n";
-                for(var i=0; i<found_entities.length; i++){
-                    message += "\t" + found_entities[i] + "\n";
-                }
-                app.dialogs.showSimpleDialog(message);
+            console.log(result);
+            fs.writeFile(path.parse(filename).dir + path.sep + path.parse(filename).name + '.json', JSON.stringify(result), function(err) {
                 
-                if (err) app.dialogs.showSimpleDialog(err);
-                else app.dialogs.showSimpleDialog("JSON file created");
+                if (err) {
+                    if (err instanceof Error){
+                        console.log(err);
+                    } else app.dialogs.showErrorDialog(err);
+                }
+                else {
+                    var message = "Found entitites:\n";
+                    for(var i=0; i<found_entities.length; i++){
+                        message += "\t" + found_entities[i] + "\n";
+                    }
+                    app.dialogs.showInfoDialog(message);
+                    app.dialogs.showInfoDialog("JSON file created");
+                }
             });
             
 
@@ -179,16 +184,21 @@ function loadFromFile (filename) {
                 result = xmlToJson(XML, 2);    ////cmabiar cuando el otro cambie     <------------(1)
 
 
-                fs.writeFile(path.parse(filename).dir + path_separator + path.parse(filename).name + '.json', JSON.stringify(result), function(err) {
+                fs.writeFile(path.parse(filename).dir + path.sep + path.parse(filename).name + '.json', JSON.stringify(result), function(err) {
 
-                    var message = "Found entitites:\n";
-                    for(var i=0; i<found_entities.length; i++){
-                        message += "\t" + found_entities[i] + "\n";
+                    if (err) {
+                        if (err instanceof Error){
+                            console.log(err);
+                        } else app.dialogs.showErrorDialog(err);
                     }
-                    app.dialogs.showSimpleDialog(message);
-
-                    if (err) app.dialogs.showSimpleDialog(err);
-                    else app.dialogs.showSimpleDialog("JSON file created");
+                    else {
+                        var message = "Found entitites:\n";
+                        for(var i=0; i<found_entities.length; i++){
+                            message += "\t" + found_entities[i] + "\n";
+                        }
+                        app.dialogs.showInfoDialog(message);
+                        app.dialogs.showInfoDialog("JSON file created");
+                    }
                 });
                 
             });
